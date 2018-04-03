@@ -28,14 +28,8 @@ var renderBarChart = function (ctx, times, names, x, y) {
     ctx.fillStyle = '#000';
     ctx.fillText(names[i], x + leftIndent + (barWidth + distance) * i, y + 250);
     ctx.fillText(Math.round(times[i]), x + leftIndent + (barWidth + distance) * i, (y + 220) - (barHeight * times[i]) / maxTime);
-    ctx.beginPath();
-    ctx.moveTo(x + leftIndent + (barWidth + distance) * i, y + 230);
-    ctx.lineTo(x + leftIndent + barWidth + (barWidth + distance) * i, y + 230);
-    ctx.lineTo(x + leftIndent + barWidth + (barWidth + distance) * i, (y + 230) - (barHeight * times[i]) / maxTime);
-    ctx.lineTo(x + leftIndent + (barWidth + distance) * i, (y + 230) - (barHeight * times[i]) / maxTime);
-    ctx.closePath();
     ctx.fillStyle = names[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : 'rgba(0, 0, 255, ' + Math.random() + ')';
-    ctx.fill();
+    ctx.fillRect(x + leftIndent + (barWidth + distance) * i, y + 230 - (barHeight * times[i]) / maxTime, barWidth, (barHeight * times[i]) / maxTime);
   }
 };
 
