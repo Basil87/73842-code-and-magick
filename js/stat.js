@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 var CLOUD_WIDTH = 420;
 var CLOUD_HEIGHT = 270;
@@ -21,7 +21,7 @@ var renderText = function (ctx, x, y, color) {
   ctx.fillText('Список результатов:', x + leftIndent, y + 50);
 };
 
-var renderBarChart = function (ctx, times, names, x, y, color) {
+var renderBarChart = function (ctx, times, names, x, y) {
   var maxTime = getMaxElement(times);
   for (var i = 0; i < names.length; i++) {
 
@@ -39,7 +39,7 @@ var renderBarChart = function (ctx, times, names, x, y, color) {
   }
 };
 
-var getMaxElement = function(arr) {
+var getMaxElement = function (arr) {
   var maxElement = arr[0];
 
   for (var i = 0; i < arr.length; i++) {
@@ -51,7 +51,7 @@ var getMaxElement = function(arr) {
   return maxElement;
 };
 
-window.renderStatistics = function(ctx, names, times) {
+window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, CLOUD_X + 10, CLOUD_Y + 10, 'rgba(0, 0, 0, 0.3)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
   renderText(ctx, CLOUD_X, CLOUD_Y, '#000');
