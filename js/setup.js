@@ -20,7 +20,7 @@ for (var i = 0; i < 4; i++) {
     name: findRandomElem(firstName) + ' ' + findRandomElem(secondName),
     coatColor: findRandomElem(coatColor),
     eyesColor: findRandomElem(eyesColor)
-  }
+  };
 }
 
 var createPerson = function (person) {
@@ -35,12 +35,13 @@ var createPerson = function (person) {
   return elem;
 };
 
+var similarList = document.querySelector('.setup-similar-list');
 var fragment = document.createDocumentFragment();
-var setup = document.querySelector('.setup-similar');
+var setupSimilar = document.querySelector('.setup-similar');
 
-for (i = 0; i < personsArr.length; i++) {
+for (var i = 0; i < personsArr.length; i++) {
   fragment.appendChild(createPerson(personsArr[i]));
 }
 
-setup.appendChild(fragment);
-setup.classList.remove('hidden');
+similarList.appendChild(fragment);
+setupSimilar.classList.remove('hidden');
