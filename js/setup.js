@@ -54,7 +54,7 @@ var addFragment = function () {
 var openSetupSimilar = function () {
 
   document.querySelector('.setup-similar').classList.remove('hidden');
-}
+};
 
 var initSetup = function () {
   openSetup();
