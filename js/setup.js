@@ -13,15 +13,6 @@ var findRandomElem = function (arr) {
   return arr[rand];
 }
 
-var makeElement = function (tagName, className, text) {
-  var element = document.createElement(tagName);
-  element.classList.add(className);
-  if (text) {
-      element.textContent = text;
-  }
-  return element;
-};
-
 for (var i = 0; i < 4; i++) {
   personsArr[i] = {
     name: findRandomElem(firstName) + ' ' + findRandomElem(secondName),
@@ -30,60 +21,25 @@ for (var i = 0; i < 4; i++) {
   }
 }
 
-// var person = {
-//   name: findRandomElem(firstName) + ' ' + findRandomElem(secondName),
-//   coatColor: findRandomElem(coatColor),
-//   eyesColor: findRandomElem(eyesColor)
-// }
-
-var createSvg = function (person) {
-
-  var svg = document.createElement('svg');
-  svg.classList.add('setup-similar-wizard');
-  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  svg.setAttribute('viewBox', '0 0 62 86');
-
-  var g = document.createElement('g');
-  g.classList.add('wizard');
-  svg.appendChild(g);
-
-  var useNames = ['wizard-coat', 'wizard-head', 'wizard-eyes', 'wizard-hands'];
-
-  for (var i = 0; i < useNames.length; i++) {
-    var use = document.createElement('use');
-    // use.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-    use.setAttribute('xlink:href', '#' + useNames[i]);
-    use.classList.add(useNames[i]);
-    useNames[i] === 'wizard-coat' ? use.style.fill = person.coatColor : useNames[i] === 'wizard-eyes' ? use.style.fill = person.eyesColor : '' ;
-    g.appendChild(use);
-  }
-
-  return svg;
-}
-
 var createPerson = function (person) {
-  var listItem = makeElement('div', 'setup-similar-item');
 
-  var content = makeElement('div', 'setup-similar-content');
-  listItem.appendChild(content);
+  var temp = document.querySelector('#similar-wizard-template');
+  var elem = temp.content.cloneNode(true);
 
-  var label = makeElement('label', 'setup-similar-label', person.name);
-  listItem.appendChild(label);
+  elem.querySelector('.setup-similar-label').textContent = person.name;
+  elem.querySelector('.wizard-coat').style.fill = person.coatColor;
+  elem.querySelector('.wizard-eyes').style.fill = person.eyesColor;
 
-  var svgImage = createSvg(person);
-
-  content.appendChild(svgImage);
-
-  return listItem;
+  return elem;
 };
 
 var similarList = document.querySelector('.setup-similar-list');
 var fragment = document.createDocumentFragment();
+var setup = document.querySelector('.setup-similar');
 
 for (var i = 0; i < personsArr.length; i++) {
   fragment.appendChild(createPerson(personsArr[i]));
 }
 
 similarList.appendChild(fragment);
-var setup = document.querySelector('.setup-similar');
 setup.classList.remove('hidden');
