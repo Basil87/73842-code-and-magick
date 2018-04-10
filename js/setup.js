@@ -1,3 +1,5 @@
+'use strict';
+
 var setup = document.querySelector('.setup');
 setup.classList.remove('hidden');
 
@@ -11,7 +13,7 @@ var findRandomElem = function (arr) {
   var rand = Math.floor(Math.random() * arr.length);
 
   return arr[rand];
-}
+};
 
 for (var i = 0; i < 4; i++) {
   personsArr[i] = {
@@ -33,13 +35,12 @@ var createPerson = function (person) {
   return elem;
 };
 
-var similarList = document.querySelector('.setup-similar-list');
 var fragment = document.createDocumentFragment();
 var setup = document.querySelector('.setup-similar');
 
-for (var i = 0; i < personsArr.length; i++) {
+for (i = 0; i < personsArr.length; i++) {
   fragment.appendChild(createPerson(personsArr[i]));
 }
 
-similarList.appendChild(fragment);
+setup.appendChild(fragment);
 setup.classList.remove('hidden');
