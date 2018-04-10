@@ -1,10 +1,10 @@
 'use strict';
 
-var FIRST_NAME = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var SECOND_NAME = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var EYES_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
-var MAGIC_NUMBER = 4;
+var FIRST_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+var SECOND_NAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var numberOfWizards = 4;
 var wizardsSpecials = [];
 
 var openSetup = function () {
@@ -21,9 +21,9 @@ var createWizardsSpecials = function (wizardCount) {
 
   for (var i = 0; i < wizardCount; i++) {
     wizardsSpecials[i] = {
-      name: findRandomElem(FIRST_NAME) + ' ' + findRandomElem(SECOND_NAME),
-      coatColor: findRandomElem(COAT_COLOR),
-      eyesColor: findRandomElem(EYES_COLOR)
+      name: findRandomElem(FIRST_NAMES) + ' ' + findRandomElem(SECOND_NAMES),
+      coatColor: findRandomElem(COAT_COLORS),
+      eyesColor: findRandomElem(EYES_COLORS)
     };
   }
 };
@@ -58,7 +58,7 @@ var openSetupSimilar = function () {
 
 var initSetup = function () {
   openSetup();
-  createWizardsSpecials(MAGIC_NUMBER);
+  createWizardsSpecials(numberOfWizards);
   addFragment();
   openSetupSimilar();
 };
