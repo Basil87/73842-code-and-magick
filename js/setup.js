@@ -1,13 +1,15 @@
 'use strict';
 
-var setup = document.querySelector('.setup');
-setup.classList.remove('hidden');
+var FIRST_NAME = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+var SECOND_NAME = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var EYES_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
+var MAGIC_NUMBER = 4;
+var wizardsSpecials = [];
 
-var firstName = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var secondName = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var coatColor = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var eyesColor = ['black', 'red', 'blue', 'yellow', 'green'];
-var personsArr = [];
+var openSetup = function () {
+  document.querySelector('.setup').classList.remove('hidden');
+};
 
 var findRandomElem = function (arr) {
   var rand = Math.floor(Math.random() * arr.length);
@@ -15,13 +17,16 @@ var findRandomElem = function (arr) {
   return arr[rand];
 };
 
-for (var i = 0; i < 4; i++) {
-  personsArr[i] = {
-    name: findRandomElem(firstName) + ' ' + findRandomElem(secondName),
-    coatColor: findRandomElem(coatColor),
-    eyesColor: findRandomElem(eyesColor)
-  };
-}
+var createWizardsSpecials = function (wizardCount) {
+
+  for (var i = 0; i < wizardCount; i++) {
+    wizardsSpecials[i] = {
+      name: findRandomElem(FIRST_NAME) + ' ' + findRandomElem(SECOND_NAME),
+      coatColor: findRandomElem(COAT_COLOR),
+      eyesColor: findRandomElem(EYES_COLOR)
+    };
+  }
+};
 
 var createPerson = function (person) {
 
@@ -35,13 +40,27 @@ var createPerson = function (person) {
   return elem;
 };
 
-var similarList = document.querySelector('.setup-similar-list');
-var fragment = document.createDocumentFragment();
-var setupSimilar = document.querySelector('.setup-similar');
+var addFragment = function () {
+  var fragment = document.createDocumentFragment();
+  var similarList = document.querySelector('.setup-similar-list');
 
-for (i = 0; i < personsArr.length; i++) {
-  fragment.appendChild(createPerson(personsArr[i]));
+  for (var i = 0; i < wizardsSpecials.length; i++) {
+    fragment.appendChild(createPerson(wizardsSpecials[i]));
+  }
+
+  similarList.appendChild(fragment);
+};
+
+var openSetupSimilar = function () {
+
+  document.querySelector('.setup-similar').classList.remove('hidden');
 }
 
-similarList.appendChild(fragment);
-setupSimilar.classList.remove('hidden');
+var initSetup = function () {
+  openSetup();
+  createWizardsSpecials(MAGIC_NUMBER);
+  addFragment();
+  openSetupSimilar();
+};
+
+initSetup();
