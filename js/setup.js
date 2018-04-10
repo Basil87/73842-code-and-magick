@@ -39,7 +39,7 @@ var similarList = document.querySelector('.setup-similar-list');
 var fragment = document.createDocumentFragment();
 var setupSimilar = document.querySelector('.setup-similar');
 
-for (var i = 0; i < personsArr.length; i++) {
+for (i = 0; i < personsArr.length; i++) {
   fragment.appendChild(createPerson(personsArr[i]));
 }
 
