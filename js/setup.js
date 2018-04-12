@@ -114,27 +114,16 @@ setupClose.addEventListener('keydown', function (e) {
   }
 });
 
-var changeColor = function (block, colorsArr, parentName) {
-
-  var color = findRandomElem(colorsArr);
-
-  if (block.tagName === 'use') {
-    block.style.fill = color;
-  } else {
-    block.style.background = color;
-  }
-};
-
 wizardEye.addEventListener('click', function () {
   var colorEye = findRandomElem(EYES_COLORS);
-  var eyeInput = document.querySelector( 'input[name="eyes-color"]' );
+  var eyeInput = document.querySelector('input[name="eyes-color"]');
   wizardEye.style.fill = colorEye;
   eyeInput.value = colorEye;
 });
 
 fireball.addEventListener('click', function () {
   var colorFire = findRandomElem(FIREBALL_COLOR);
-  var fireballInput = document.querySelector( 'input[name="fireball-color"]' );
+  var fireballInput = document.querySelector('input[name="fireball-color"]');
   fireball.style.background = colorFire;
   fireballInput.value = colorFire;
 });
