@@ -4,6 +4,7 @@ var FIRST_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'К�
 var SECOND_NAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var numberOfWizards = 4;
 var wizardsSpecials = [];
 
@@ -64,3 +65,71 @@ var initSetup = function () {
 };
 
 initSetup();
+
+
+var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
+var setup = document.querySelector('.setup');
+var setupOpen = document.querySelector('.setup-open');
+var setupClose = setup.querySelector('.setup-close');
+var nameInput = setup.querySelector('.setup-user-name');
+var wizard = document.querySelector('.setup-wizard');
+var wizardEye = wizard.querySelector('.wizard-eyes');
+var fireballWrap = document.querySelector('.setup-fireball-wrap');
+var fireball = fireballWrap.querySelector('.setup-fireball-wrap');
+
+
+var onPopupEscPress = function (e) {
+  if (e.keyCode === ESC_KEYCODE && nameInput !== document.activeElement) {
+    closePopup();
+  } 
+};
+
+var openPopup = function () {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+var changeColor = function (block, colorsArr, parentName) {
+
+  var color = findRandomElem(colorsArr);
+
+  if (block.tagName === 'use') {
+    block.style.fill = color;
+  } else {
+    block.style.background = color;
+  }
+};
+
+setupOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+setupOpen.addEventListener('keydown', function (e) {
+  if (e.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener('click', function () {
+  closePopup();
+});
+
+setupClose.addEventListener('keydown', function (e) {
+  if (e.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});
+
+wizardEye.addEventListener('click', function () {
+  changeColor(wizardEye, EYES_COLORS);
+});
+
+fireball.addEventListener('click', function () {
+  changeColor(fireball, FIREBALL_COLOR);
+});
