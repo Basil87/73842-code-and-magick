@@ -75,14 +75,13 @@ var setupClose = setup.querySelector('.setup-close');
 var nameInput = setup.querySelector('.setup-user-name');
 var wizard = document.querySelector('.setup-wizard');
 var wizardEye = wizard.querySelector('.wizard-eyes');
-var fireballWrap = document.querySelector('.setup-fireball-wrap');
-var fireball = fireballWrap.querySelector('.setup-fireball-wrap');
+var fireball = document.querySelector('.setup-fireball-wrap');
 
 
 var onPopupEscPress = function (e) {
   if (e.keyCode === ESC_KEYCODE && nameInput !== document.activeElement) {
     closePopup();
-  } 
+  }
 };
 
 var openPopup = function () {
@@ -93,17 +92,6 @@ var openPopup = function () {
 var closePopup = function () {
   setup.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
-};
-
-var changeColor = function (block, colorsArr, parentName) {
-
-  var color = findRandomElem(colorsArr);
-
-  if (block.tagName === 'use') {
-    block.style.fill = color;
-  } else {
-    block.style.background = color;
-  }
 };
 
 setupOpen.addEventListener('click', function () {
@@ -126,10 +114,27 @@ setupClose.addEventListener('keydown', function (e) {
   }
 });
 
+var changeColor = function (block, colorsArr, parentName) {
+
+  var color = findRandomElem(colorsArr);
+
+  if (block.tagName === 'use') {
+    block.style.fill = color;
+  } else {
+    block.style.background = color;
+  }
+};
+
 wizardEye.addEventListener('click', function () {
-  changeColor(wizardEye, EYES_COLORS);
+  var colorEye = findRandomElem(EYES_COLORS);
+  var eyeInput = document.querySelector( 'input[name="eyes-color"]' );
+  wizardEye.style.fill = colorEye;
+  eyeInput.value = colorEye;
 });
 
 fireball.addEventListener('click', function () {
-  changeColor(fireball, FIREBALL_COLOR);
+  var colorFire = findRandomElem(FIREBALL_COLOR);
+  var fireballInput = document.querySelector( 'input[name="fireball-color"]' );
+  fireball.style.background = colorFire;
+  fireballInput.value = colorFire;
 });
