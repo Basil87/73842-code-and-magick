@@ -4,9 +4,21 @@ var FIRST_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'К�
 var SECOND_NAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
-var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var numberOfWizards = 4;
 var wizardsSpecials = [];
+
+// Events variables
+
+var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
+var setup = document.querySelector('.setup');
+var setupOpen = document.querySelector('.setup-open');
+var setupClose = setup.querySelector('.setup-close');
+var nameInput = setup.querySelector('.setup-user-name');
+var wizard = document.querySelector('.setup-wizard');
+var wizardEye = wizard.querySelector('.wizard-eyes');
+var fireball = document.querySelector('.setup-fireball-wrap');
 
 var openSetup = function () {
   document.querySelector('.setup').classList.remove('hidden');
@@ -66,17 +78,7 @@ var initSetup = function () {
 
 initSetup();
 
-
-var ENTER_KEYCODE = 13;
-var ESC_KEYCODE = 27;
-var setup = document.querySelector('.setup');
-var setupOpen = document.querySelector('.setup-open');
-var setupClose = setup.querySelector('.setup-close');
-var nameInput = setup.querySelector('.setup-user-name');
-var wizard = document.querySelector('.setup-wizard');
-var wizardEye = wizard.querySelector('.wizard-eyes');
-var fireball = document.querySelector('.setup-fireball-wrap');
-
+// Events actions
 
 var onPopupEscPress = function (e) {
   if (e.keyCode === ESC_KEYCODE && nameInput !== document.activeElement) {
@@ -122,7 +124,7 @@ wizardEye.addEventListener('click', function () {
 });
 
 fireball.addEventListener('click', function () {
-  var colorFire = findRandomElem(FIREBALL_COLOR);
+  var colorFire = findRandomElem(FIREBALL_COLORS);
   var fireballInput = document.querySelector('input[name="fireball-color"]');
   fireball.style.background = colorFire;
   fireballInput.value = colorFire;
