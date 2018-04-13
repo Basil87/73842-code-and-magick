@@ -20,10 +20,6 @@ var wizard = document.querySelector('.setup-wizard');
 var wizardEye = wizard.querySelector('.wizard-eyes');
 var fireball = document.querySelector('.setup-fireball-wrap');
 
-var openSetup = function () {
-  document.querySelector('.setup').classList.remove('hidden');
-};
-
 var findRandomElem = function (arr) {
   var rand = Math.floor(Math.random() * arr.length);
 
@@ -70,7 +66,6 @@ var openSetupSimilar = function () {
 };
 
 var initSetup = function () {
-  openSetup();
   createWizardsSpecials(numberOfWizards);
   addFragment();
   openSetupSimilar();
