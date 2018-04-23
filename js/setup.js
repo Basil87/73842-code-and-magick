@@ -75,6 +75,16 @@ initSetup();
 
 // Events actions
 
+var getCoords = function (elem) { // кроме IE8-
+  var box = elem.getBoundingClientRect();
+
+  return {
+    top: box.top + pageYOffset,
+    left: box.left + pageXOffset
+  };
+
+}
+
 var onPopupEscPress = function (e) {
   if (e.keyCode === ESC_KEYCODE && nameInput !== document.activeElement) {
     closePopup();
@@ -82,6 +92,8 @@ var onPopupEscPress = function (e) {
 };
 
 var openPopup = function () {
+  setup.style.top = '80px';
+  setup.style.left = '50%';
   setup.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
 };
@@ -91,13 +103,13 @@ var closePopup = function () {
   document.removeEventListener('keydown', onPopupEscPress);
 };
 
-setupOpen.addEventListener('click', function () {
+setupOpen.addEventListener('click', function (e) {
   openPopup();
 });
 
 setupOpen.addEventListener('keydown', function (e) {
   if (e.keyCode === ENTER_KEYCODE) {
-    openPopup();
+    openPopup(e);
   }
 });
 
@@ -123,4 +135,56 @@ fireball.addEventListener('click', function () {
   var fireballInput = document.querySelector('input[name="fireball-color"]');
   fireball.style.background = colorFire;
   fireballInput.value = colorFire;
+});
+
+// drug and drop elem
+
+var shopElement = document.querySelector('.setup-artifacts-shop');
+var wizardElement = document.querySelector('.setup-artifacts');
+var wizardElementCells = wizardElement.querySelectorAll('.setup-artifacts-cell');
+var draggedItem = null;
+
+var addRedOutline = function (elements, status) {
+  for (var i = 0; i < elements.length; i++) {
+    if (status === 'on') {
+      elements[i].style.outline = '2px solid red';
+    } else {
+      elements[i].style.outline = '';
+    }
+  }
+}
+
+shopElement.addEventListener('dragstart', function (e) {
+  if (e.target.tagName.toLowerCase() === 'img') {
+    draggedItem = e.target;
+    e.dataTransfer.setData('text/plain', e.target.alt);
+    addRedOutline(wizardElementCells, 'on');
+  }
+});
+
+var artifactsElement = document.querySelector('.setup-artifacts');
+
+artifactsElement.addEventListener('dragover', function (e) {
+  e.preventDefault();
+  return false;
+});
+
+artifactsElement.addEventListener('drop', function (e) {
+  e.target.style.backgroundColor = '';
+  e.target.appendChild(draggedItem);
+  e.preventDefault();
+  addRedOutline(wizardElementCells);
+});
+
+
+artifactsElement.addEventListener('dragenter', function (e) {
+  e.target.style.backgroundColor = 'yellow';
+  e.preventDefault();
+  addRedOutline(wizardElementCells);
+});
+
+artifactsElement.addEventListener('dragleave', function (e) {
+  e.target.style.backgroundColor = '';
+  e.preventDefault();
+  addRedOutline(wizardElementCells, 'on');
 });
