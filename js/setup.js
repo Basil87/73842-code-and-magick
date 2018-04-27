@@ -140,51 +140,57 @@ fireball.addEventListener('click', function () {
 // drug and drop elem
 
 var shopElement = document.querySelector('.setup-artifacts-shop');
-var wizardElement = document.querySelector('.setup-artifacts');
-var wizardElementCells = wizardElement.querySelectorAll('.setup-artifacts-cell');
+var artifactsElement = document.querySelector('.setup-artifacts');
+var wizardElementCells = artifactsElement.querySelectorAll('.setup-artifacts-cell');
 var draggedItem = null;
 
-var addRedOutline = function (elements, status) {
-  for (var i = 0; i < elements.length; i++) {
-    if (status === 'on') {
-      elements[i].style.outline = '2px solid red';
-    } else {
-      elements[i].style.outline = '';
-    }
-  }
-}
+var shopElement = document.querySelector('.setup-artifacts-shop');
+var wizardElement = document.querySelector('.setup-artifacts');
+var draggedItem = null;
 
 shopElement.addEventListener('dragstart', function (e) {
   if (e.target.tagName.toLowerCase() === 'img') {
-    draggedItem = e.target;
+    draggedItem = e.target.cloneNode(true);
     e.dataTransfer.setData('text/plain', e.target.alt);
-    addRedOutline(wizardElementCells, 'on');
+    wizardElement.style.outline = '2px solid red';
   }
 });
 
-var artifactsElement = document.querySelector('.setup-artifacts');
-
-artifactsElement.addEventListener('dragover', function (e) {
+wizardElement.addEventListener('dragover', function (e) {
   e.preventDefault();
-  return false;
+  if (e.target.tagName.toLowerCase() === 'img' || e.target.firstChild) {
+    e.dataTransfer.dropEffect = 'none';
+  }
+
 });
 
-artifactsElement.addEventListener('drop', function (e) {
+wizardElement.addEventListener('drop', function (e) {
+  e.preventDefault();
+  if (e.target.tagName.toLowerCase() !== 'img' || !e.target.firstChild) {
+    e.target.style.backgroundColor = '';
+    e.target.appendChild(draggedItem);
+    wizardElement.style.outline = '';
+  }
+});
+
+wizardElement.addEventListener('dragenter', function (e) {
+  e.preventDefault();
+  if (e.target.tagName.toLowerCase() === 'img' || e.target.firstChild) {
+    e.target.style.backgroundColor = '';
+  } else {
+    e.target.style.backgroundColor = 'yellow';
+  }
+});
+
+wizardElement.addEventListener('dragleave', function (e) {
+  e.preventDefault();
   e.target.style.backgroundColor = '';
-  e.target.appendChild(draggedItem);
-  e.preventDefault();
-  addRedOutline(wizardElementCells);
 });
 
-
-artifactsElement.addEventListener('dragenter', function (e) {
-  e.target.style.backgroundColor = 'yellow';
-  e.preventDefault();
-  addRedOutline(wizardElementCells);
-});
-
-artifactsElement.addEventListener('dragleave', function (e) {
-  e.target.style.backgroundColor = '';
-  e.preventDefault();
-  addRedOutline(wizardElementCells, 'on');
+wizardElement.addEventListener('dragleave', function (e) {
+  if (e.target.tagName.toLowerCase() === 'img') {
+    draggedItem = e.target;
+    e.dataTransfer.setData('text/plain', e.target.alt);
+    wizardElement.style.outline = '2px solid red';
+  }
 });
