@@ -75,16 +75,6 @@ initSetup();
 
 // Events actions
 
-var getCoords = function (elem) { // кроме IE8-
-  var box = elem.getBoundingClientRect();
-
-  return {
-    top: box.top + pageYOffset,
-    left: box.left + pageXOffset
-  };
-
-}
-
 var onPopupEscPress = function (e) {
   if (e.keyCode === ESC_KEYCODE && nameInput !== document.activeElement) {
     closePopup();
@@ -109,7 +99,7 @@ setupOpen.addEventListener('click', function (e) {
 
 setupOpen.addEventListener('keydown', function (e) {
   if (e.keyCode === ENTER_KEYCODE) {
-    openPopup(e);
+    openPopup();
   }
 });
 
@@ -140,7 +130,6 @@ fireball.addEventListener('click', function () {
 // drug and drop elem
 
 var shopElement = document.querySelector('.setup-artifacts-shop');
-var artifactsElement = document.querySelector('.setup-artifacts');
 var wizardElement = document.querySelector('.setup-artifacts');
 var draggedItem = null;
 
