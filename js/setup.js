@@ -93,7 +93,7 @@ var closePopup = function () {
   document.removeEventListener('keydown', onPopupEscPress);
 };
 
-setupOpen.addEventListener('click', function (e) {
+setupOpen.addEventListener('click', function () {
   openPopup();
 });
 
