@@ -141,10 +141,6 @@ fireball.addEventListener('click', function () {
 
 var shopElement = document.querySelector('.setup-artifacts-shop');
 var artifactsElement = document.querySelector('.setup-artifacts');
-var wizardElementCells = artifactsElement.querySelectorAll('.setup-artifacts-cell');
-var draggedItem = null;
-
-var shopElement = document.querySelector('.setup-artifacts-shop');
 var wizardElement = document.querySelector('.setup-artifacts');
 var draggedItem = null;
 
@@ -161,7 +157,6 @@ wizardElement.addEventListener('dragover', function (e) {
   if (e.target.tagName.toLowerCase() === 'img' || e.target.firstChild) {
     e.dataTransfer.dropEffect = 'none';
   }
-
 });
 
 wizardElement.addEventListener('drop', function (e) {
@@ -187,7 +182,7 @@ wizardElement.addEventListener('dragleave', function (e) {
   e.target.style.backgroundColor = '';
 });
 
-wizardElement.addEventListener('dragleave', function (e) {
+wizardElement.addEventListener('dragstart', function (e) {
   if (e.target.tagName.toLowerCase() === 'img') {
     draggedItem = e.target;
     e.dataTransfer.setData('text/plain', e.target.alt);
