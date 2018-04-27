@@ -153,6 +153,9 @@ shopElement.addEventListener('dragstart', function (e) {
 });
 
 wizardElement.addEventListener('dragover', function (e) {
+  if (e.target.tagName.toLowerCase() === 'img' || e.target.firstChild) {
+    return true;
+  }
   e.preventDefault();
   if (e.target.tagName.toLowerCase() === 'img' || e.target.firstChild) {
     e.dataTransfer.dropEffect = 'none';
