@@ -1,5 +1,7 @@
 'use strict';
 
+(function () {
+
 var CLOUD_WIDTH = 420;
 var CLOUD_HEIGHT = 270;
 var CLOUD_X = 100;
@@ -57,3 +59,5 @@ window.renderStatistics = function (ctx, names, times) {
   renderText(ctx, CLOUD_X, CLOUD_Y, '#000');
   renderBarChart(ctx, times, names, CLOUD_X, CLOUD_Y);
 };
+
+})();
