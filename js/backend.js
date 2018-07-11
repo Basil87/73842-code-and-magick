@@ -1,57 +1,53 @@
 'use strict';
- 
-var backend = (function () {
 
-  var URL_SEND = 'https://js.dump.academy/code-and-magick';
+(function () {
+
+  var URL_SEND = 'https://js.dump.academy/code-and-magick1';
   var URL_GET = 'https://js.dump.academy/code-and-magick/data';
 
-  // var save = function (data, onLoad, onError) {
-  //   console.log('lol');
-  //   var xhr = new XMLHttpRequest();
-  //   xhr.responseType = 'json';
+  var backend = {
 
-  //   xhr.addEventListener('load', function () {
-  //     if (xhr.status === 200) {
-  //       onSuccess(xhr.response);
-  //     } else {
-  //       onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
-  //     }
-  //   });
+    load: function (onLoad, onError) {
 
-  //   xhr.addEventListener('error', function () {
-  //     onError('Произошла ошибка соединения');
-  //   });
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'json';
 
-  //   xhr.open('POST', URL_SEND);
-  //   xhr.send(data);
-  // };
+      xhr.addEventListener('load', function () {
 
-  var load = function (onLoad, onError) {
+        if (xhr.status === 200) {
+          onLoad(xhr.response);
+        } else {
+          onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        }
+      });
 
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
+      xhr.addEventListener('error', function () {
+        onError('Произошла ошибка соединения');
+      });
 
-    xhr.addEventListener('load', function () {
-      console.log(xhr.response);
-      if (xhr.status === 200) {
-        onLoad(xhr.response);
-      } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
-      }
-    });
-    
-    xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
-    });
-    
-    xhr.open('GET', URL_GET);
-    xhr.send();
+      xhr.open('GET', URL_GET);
+      xhr.send();
+    },
+
+    save: function (data, onLoad, onError) {
+
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'json';
+
+      xhr.addEventListener('load', function () {
+        if (xhr.status === 200) {
+          onLoad(xhr.response);
+          console.log(xhr.status + ' ' + xhr.statusText);
+        } else {
+          onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+          console.log(xhr.status + ' ' + xhr.statusText);
+        }
+      });
+
+      xhr.open('POST', URL_SEND);
+      xhr.send(data);
+    }
   };
 
-  return {
-
-    load: load
-  }
+  window.backend = backend;
 })();
-
-backend.load();

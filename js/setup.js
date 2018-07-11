@@ -1,13 +1,9 @@
 'use strict';
 (function () {
-  
-var FIRST_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var SECOND_NAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+
 var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
-var numberOfWizards = 4;
-var wizardsSpecials = [];
 
 // Events variables
 
@@ -20,6 +16,7 @@ var nameInput = setup.querySelector('.setup-user-name');
 var wizard = document.querySelector('.setup-wizard');
 var wizardEye = wizard.querySelector('.wizard-eyes');
 var fireball = document.querySelector('.setup-fireball-wrap');
+var form = setup.querySelector('.setup-wizard-form');
 
 var findRandomElem = function (arr) {
   var rand = Math.floor(Math.random() * arr.length);
@@ -27,62 +24,29 @@ var findRandomElem = function (arr) {
   return arr[rand];
 };
 
-var createWizardsSpecials = function (wizardCount) {
-
-  for (var i = 0; i < wizardCount; i++) {
-    wizardsSpecials[i] = {
-      name: findRandomElem(FIRST_NAMES) + ' ' + findRandomElem(SECOND_NAMES),
-      coatColor: findRandomElem(COAT_COLORS),
-      eyesColor: findRandomElem(EYES_COLORS)
-    };
-  }
-};
+var temp = document.querySelector('#similar-wizard-template');
+var similarList = document.querySelector('.setup-similar-list');
 
 var createPerson = function (person) {
 
-  var temp = document.querySelector('#similar-wizard-template');
   var elem = temp.content.cloneNode(true);
 
   elem.querySelector('.setup-similar-label').textContent = person.name;
-  elem.querySelector('.wizard-coat').style.fill = person.coatColor;
-  elem.querySelector('.wizard-eyes').style.fill = person.eyesColor;
+  elem.querySelector('.wizard-coat').style.fill = person.colorCoat;
+  elem.querySelector('.wizard-eyes').style.fill = person.colorEyes;
 
   return elem;
 };
-
-var addFragment = function () {
-  var fragment = document.createDocumentFragment();
-  var similarList = document.querySelector('.setup-similar-list');
-
-  for (var i = 0; i < wizardsSpecials.length; i++) {
-    fragment.appendChild(createPerson(wizardsSpecials[i]));
-  }
-
-  similarList.appendChild(fragment);
-};
-
-var openSetupSimilar = function () {
-
-  document.querySelector('.setup-similar').classList.remove('hidden');
-};
-
-var initSetup = function () {
-  createWizardsSpecials(numberOfWizards);
-  addFragment();
-  openSetupSimilar();
-};
-
-initSetup();
 
 var successHandler = function (wizards) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < 4; i++) {
-    fragment.appendChild(renderWizard(wizards[i]));
+    fragment.appendChild(createPerson(findRandomElem(wizards)));
   }
-  similarListElement.appendChild(fragment);
+  similarList.appendChild(fragment);
 
-  userDialog.querySelector('.setup-similar').classList.remove('hidden');
+  setup.querySelector('.setup-similar').classList.remove('hidden');
 };
 
 var errorHandler = function (errorMessage) {
@@ -97,8 +61,6 @@ var errorHandler = function (errorMessage) {
   document.body.insertAdjacentElement('afterbegin', node);
 };
 
-backend.load(successHandler, errorHandler);
-
 // Events actions
 
 var onPopupEscPress = function (e) {
@@ -112,6 +74,7 @@ var openPopup = function () {
   setup.style.left = '50%';
   setup.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
+  backend.load(successHandler, errorHandler);
 };
 
 var closePopup = function () {
@@ -151,6 +114,17 @@ fireball.addEventListener('click', function () {
   var fireballInput = document.querySelector('input[name="fireball-color"]');
   fireball.style.background = colorFire;
   fireballInput.value = colorFire;
+});
+
+
+
+form.addEventListener('submit', function (e) {
+  backend.save(new FormData(form), function (response) {
+    closePopup();
+  }, function (notResponse) {
+    errorHandler(notResponse);
+  });
+  e.preventDefault();
 });
 
 // drug and drop elem
