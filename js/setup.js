@@ -1,8 +1,6 @@
 'use strict';
 (function () {
 
-var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
 // Events variables
@@ -13,10 +11,55 @@ var setup = document.querySelector('.setup');
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = setup.querySelector('.setup-close');
 var nameInput = setup.querySelector('.setup-user-name');
-var wizard = document.querySelector('.setup-wizard');
-var wizardEye = wizard.querySelector('.wizard-eyes');
 var fireball = document.querySelector('.setup-fireball-wrap');
 var form = setup.querySelector('.setup-wizard-form');
+
+var coatColor;
+var eyesColor;
+var wizards = [];
+
+var getRank = function (wizard) {
+  var rank = 0;
+
+  if (wizard.colorCoat === coatColor) {
+    rank += 2;
+  }
+  if (wizard.colorEyes === eyesColor) {
+    rank += 1;
+  }
+
+  return rank;
+};
+
+var namesComparator = function (left, right) {
+  if (left > right) {
+    return 1;
+  } else if (left < right) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+
+var updateWizards = function () {
+  window.render(wizards.sort(function (left, right) {
+    var rankDiff = getRank(right) - getRank(left);
+    if (rankDiff === 0) {
+      rankDiff = namesComparator(left.name, right.name);
+    }
+    return rankDiff;
+  }));
+}
+
+window.wizard.onEyesChange = window.debounce(function (color) {
+  eyesColor = color;
+  updateWizards();
+});
+
+window.wizard.onCoatChange = window.debounce(function (color) {
+  coatColor = color;
+  updateWizards();
+});
 
 var findRandomElem = function (arr) {
   var rand = Math.floor(Math.random() * arr.length);
@@ -24,29 +67,9 @@ var findRandomElem = function (arr) {
   return arr[rand];
 };
 
-var temp = document.querySelector('#similar-wizard-template');
-var similarList = document.querySelector('.setup-similar-list');
-
-var createPerson = function (person) {
-
-  var elem = temp.content.cloneNode(true);
-
-  elem.querySelector('.setup-similar-label').textContent = person.name;
-  elem.querySelector('.wizard-coat').style.fill = person.colorCoat;
-  elem.querySelector('.wizard-eyes').style.fill = person.colorEyes;
-
-  return elem;
-};
-
-var successHandler = function (wizards) {
-  var fragment = document.createDocumentFragment();
-
-  for (var i = 0; i < 4; i++) {
-    fragment.appendChild(createPerson(findRandomElem(wizards)));
-  }
-  similarList.appendChild(fragment);
-
-  setup.querySelector('.setup-similar').classList.remove('hidden');
+var successHandler = function (data) {
+  wizards = data;
+  updateWizards();
 };
 
 var errorHandler = function (errorMessage) {
@@ -102,21 +125,13 @@ setupClose.addEventListener('keydown', function (e) {
   }
 });
 
-wizardEye.addEventListener('click', function () {
-  var colorEye = findRandomElem(EYES_COLORS);
-  var eyeInput = document.querySelector('input[name="eyes-color"]');
-  wizardEye.style.fill = colorEye;
-  eyeInput.value = colorEye;
-});
-
 fireball.addEventListener('click', function () {
-  var colorFire = findRandomElem(FIREBALL_COLORS);
+  var newColor = findRandomElem(FIREBALL_COLORS);
   var fireballInput = document.querySelector('input[name="fireball-color"]');
-  fireball.style.background = colorFire;
-  fireballInput.value = colorFire;
+  this.style.background = newColor;
+  fireballInput.value = newColor;
+  updateWizards();
 });
-
-
 
 form.addEventListener('submit', function (e) {
   backend.save(new FormData(form), function (response) {
@@ -125,58 +140,6 @@ form.addEventListener('submit', function (e) {
     errorHandler(notResponse);
   });
   e.preventDefault();
-});
-
-// drug and drop elem
-
-var shopElement = document.querySelector('.setup-artifacts-shop');
-var wizardElement = document.querySelector('.setup-artifacts');
-var draggedItem = null;
-
-shopElement.addEventListener('dragstart', function (e) {
-  if (e.target.tagName.toLowerCase() === 'img') {
-    draggedItem = e.target.cloneNode(true);
-    e.dataTransfer.setData('text/plain', e.target.alt);
-    wizardElement.style.outline = '2px solid red';
-  }
-});
-
-wizardElement.addEventListener('dragover', function (e) {
-  e.preventDefault();
-  if (e.target.tagName.toLowerCase() === 'img' || e.target.firstChild) {
-    e.dataTransfer.dropEffect = 'none';
-  }
-});
-
-wizardElement.addEventListener('drop', function (e) {
-  e.preventDefault();
-  if (e.target.tagName.toLowerCase() !== 'img' || !e.target.firstChild) {
-    e.target.style.backgroundColor = '';
-    e.target.appendChild(draggedItem);
-    wizardElement.style.outline = '';
-  }
-});
-
-wizardElement.addEventListener('dragenter', function (e) {
-  e.preventDefault();
-  if (e.target.tagName.toLowerCase() === 'img' || e.target.firstChild) {
-    e.target.style.backgroundColor = '';
-  } else {
-    e.target.style.backgroundColor = 'yellow';
-  }
-});
-
-wizardElement.addEventListener('dragleave', function (e) {
-  e.preventDefault();
-  e.target.style.backgroundColor = '';
-});
-
-wizardElement.addEventListener('dragstart', function (e) {
-  if (e.target.tagName.toLowerCase() === 'img') {
-    draggedItem = e.target;
-    e.dataTransfer.setData('text/plain', e.target.alt);
-    wizardElement.style.outline = '2px solid red';
-  }
 });
 
 })();
